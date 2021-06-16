@@ -14,7 +14,7 @@ df = pd.read_excel(r'scooter.xlsx', index_col=None, header=None)
 # get shape of excel sheet (to know number of iterations)
 x = df.shape
 
-# test test
+# test test test
 
 
 def index(request):
