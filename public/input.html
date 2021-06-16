@@ -1,0 +1,15 @@
+{% extends 'basic.html' %}
+
+{% block content %}
+
+<h1>Addition</h1>
+<form action="calculation" method="POST">
+    {% csrf_token %}
+
+    Average Time per Use: <input type="text" name="usetime"><br><br>
+    Normal Uses per Day: <input type="text" name="usesday"><br><br>
+    Uses per Week: <input type="text" name="days"><br><br>
+    <input type="submit">
+</form>
+{% endblock %}
+
