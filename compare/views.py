@@ -33,7 +33,7 @@ def calculation(request):
 
     # new df to save costs and name in
     mydf = pd.DataFrame()
-   
+
     # iterations for all the models, save costs and name in df
     for i in range(0, x[1]-1):
         total_costs = tester(i, days, uses, total_time)
@@ -49,9 +49,14 @@ def calculation(request):
     # Kosten und Name des günstigsten Modells in Variablen speichern
     minval = mydf.at[0,'Kosten']
     anbieter = mydf.at[0,'Name']
-    
+
     # convert df to html table
     myhtmldf = mydf.to_html()
+
+    if mydf.at[0,'Kosten'] == mydf.at[1,'Kosten']:
+        anbieter2 = mydf.at[2,'Name']
+        return render(request, "result2.html", { "costs": minval, "name": anbieter,
+                            "name2": anbieter2, "mytable": myhtmldf})
 
 
     return render(request, "result.html", { "costs": minval, "name": anbieter,
