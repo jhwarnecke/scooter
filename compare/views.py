@@ -52,7 +52,8 @@ def calculation(request):
 
     # convert df to html table
     myhtmldf = mydf.to_html()
-
+    
+    # Falls 2 Tarife mit gleichen Kosten beide Ausgeben
     if mydf.at[0,'Kosten'] == mydf.at[1,'Kosten']:
         anbieter2 = mydf.at[2,'Name']
         return render(request, "result2.html", { "costs": minval, "name": anbieter,
