@@ -6,9 +6,9 @@
 <form action="calculation" method="POST">
     {% csrf_token %}
 
-    Average Time per Use: <input type="text" name="usetime" value=1 required><br><br>
-    Normal Uses per Day: <input type="text" name="usesday" value=1 required><br><br>
-    Uses per Week: <input type="text" name="days" value=1 required><br><br>
+    Average Time per Use: <input type="number" name="usetime" min="1" value=1 required><br><br>
+    Normal Uses per Day: <input type="number" name="usesday" min="1" value=1 required><br><br>
+    Uses per Week: <input type="number" name="days" min="1" value=1 required><br><br>
     <input type="submit">
 </form>
 {% endblock %}

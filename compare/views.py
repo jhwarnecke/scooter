@@ -35,7 +35,7 @@ def calculation(request):
 
     # iterations for all the models, save costs and name in df
     for i in range(0, x[1]-1):
-        total_costs = tester(i, days, uses, total_time)
+        total_costs = round(tester(i, days, uses, total_time), 2)
         mytempname = ((df[0][i + 2])+" "+(df[1][i + 2]))
         mytempdf = pd.DataFrame({'Name': [mytempname], 'Kosten': [total_costs]})
         mydf = mydf.append(mytempdf, ignore_index=True)
@@ -50,7 +50,7 @@ def calculation(request):
     anbieter = mydf.at[0,'Name']
 
     # convert df to html table
-    myhtmldf = mydf.to_html()
+    myhtmldf = mydf.to_html(index = False)
     
     # Falls 2 Tarife mit gleichen Kosten beide Ausgeben
     if mydf.at[0,'Kosten'] == mydf.at[1,'Kosten']:
