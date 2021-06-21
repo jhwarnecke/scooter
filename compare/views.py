@@ -17,7 +17,8 @@ x = df.shape
 
 
 def index(request):
-    return render(request, "input.html")
+    dx = df.to_html(header=False, index=False)
+    return render(request, "input.html", {"metable":dx})
 
 
 def calculation(request):
