@@ -10,8 +10,10 @@
     {% block content %}
 
     {% endblock %}
-    <form>
-     <input type="button" value="Startseite" onclick="http://localhost:8000/">
-    </form>
+  {% block nav %}
+        <ul id="nav">
+            <li>{% block nav-index %}<a href="{% url 'index' %}">Index</a>{% endblock %}</li>
+        </ul>
+  {% endblock %}
 </body>
 </html>
