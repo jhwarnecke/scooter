@@ -11,5 +11,10 @@
     Uses per Week: <input type="number" name="days" min="1" value=1 required><br><br>
     <input type="submit">
 </form>
+
+{% autoescape off %}
+<table>{{metable}}</table>
+{% endautoescape %}
+
 {% endblock %}
 
