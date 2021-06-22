@@ -5,10 +5,17 @@
 <h1>Addition</h1>
 <form action="calculation" method="POST">
     {% csrf_token %}
-
+    <h1>Commute 1</h1>
     Average Time per Use: <input type="number" name="usetime" min="1" value=1 required><br><br>
     Normal Uses per Day: <input type="number" name="usesday" min="1" value=1 required><br><br>
     Uses per Week: <input type="number" name="days" min="1" value=1 required><br><br>
+    <h1>Commute 2</h1>
+    Average Time per Use: <input type="number" name="usetime2" min="0" value=0 required><br><br>
+    Normal Uses per Day: <input type="number" name="usesday2" min="0" value=0 required><br><br>
+    Uses per Week: <input type="number" name="days2" min="0" value=0 required><br><br>
+    Out of the uses per week, how many are on the same day as a "Commute 1"?
+    <input type="number" name="samedays" min="0" value=0 required><br><br>
+
     <input type="submit">
 </form>
 

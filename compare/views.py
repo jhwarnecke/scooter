@@ -29,6 +29,19 @@ def calculation(request):
     days = int(request.POST['days'])
     uses = days * uses_per_day
     total_time = time_per_use * uses
+
+    time_per_use2 = int(request.POST['usetime2'])
+    uses_per_day2 = int(request.POST['usesday2'])
+    days2 = int(request.POST['days2'])
+    uses2 = days2 * uses_per_day2
+    total_time2 = time_per_use2 * uses2
+    samedays = int(request.POST['samedays'])
+
+
+    days_sum = days + days2 - samedays
+    uses_sum = uses + uses2
+    total_time_sum = total_time + total_time2
+    
  
 
     # new df to save costs and name in
@@ -36,7 +49,7 @@ def calculation(request):
 
     # iterations for all the models, save costs and name in df
     for i in range(0, x[1]-1):
-        total_costs = round(tester(i, days, uses, total_time), 2)
+        total_costs = round(tester(i, days_sum, uses_sum, total_time_sum), 2)
         mytempname = ((df[0][i + 2])+" "+(df[1][i + 2]))
         mytempdf = pd.DataFrame({'Name': [mytempname], 'Kosten': [total_costs]})
         mydf = mydf.append(mytempdf, ignore_index=True)
