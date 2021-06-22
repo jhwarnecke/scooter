@@ -7,13 +7,14 @@
     <title>Comparison</title>
 </head>
 <body bgcolor="lightgreen">
-    {% block content %}
-
-    {% endblock %}
-  {% block nav %}
+{% block nav %}
         <ul id="nav">
             <li>{% block nav-index %}<a href="{% url 'index' %}">Startseite</a>{% endblock %}</li>
         </ul>
   {% endblock %}
+    {% block content %}
+
+    {% endblock %}
+  
 </body>
 </html>
