@@ -2,24 +2,58 @@
 
 {% block content %}
 
-<h1>Starting page</h1>
+<h1>Startseite</h1>
+Fülle bitte bei nur einer Pendlerstrecke nur "Pendlerstrecke 1" aus. Danke!
 <form action="calculation" method="POST">
     {% csrf_token %}
-    <h1>Commute 1</h1>
-    Average Time per Use: <input type="number" name="usetime" min="1" value=1 required><br><br>
-    Normal Uses per Day: <input type="number" name="usesday" min="1" value=1 required><br><br>
-    Uses per Week: <input type="number" name="days" min="1" value=1 required><br><br>
-    <h1>Commute 2</h1>
-    Average Time per Use: <input type="number" name="usetime2" min="0" value=0 required><br><br>
-    Normal Uses per Day: <input type="number" name="usesday2" min="0" value=0 required><br><br>
-    Uses per Week: <input type="number" name="days2" min="0" value=0 required><br><br>
-    Out of the uses per week, how many are on the same day as a "Commute 1"?
-    <input type="number" name="samedays" min="0" value=0 required><br><br>
+    <h1>Pendlerstrecke 1</h1>
+    Durschnittliche Fahrtdauer: <input type="number" name="usetime" min="1" value=1 required><br><br>
+    Fahrten pro Tag: <input type="number" name="usesday" min="1" value=1 required><br><br>
+    <fieldset> 
+	<legend>Kreuzen Sie an, an welchen Tagen Sie diese Fahrten machen</legend> 
+	<input type="checkbox" name="day" value="monday" id="check1" checked>
+	<label for="check1">Montags</label>
+	<input type="checkbox" name="day" value="tuesday" id="check2">
+	<label for="check2">Dienstags</label>
+	<input type="checkbox" name="day" value="wednesday" id="check3">
+	<label for="check3">Mittwochs</label>
+	<input type="checkbox" name="day" value="thursday" id="check4">
+	<label for="check4">Donnerstags</label>
+	<input type="checkbox" name="day" value="friday" id="check5">
+	<label for="check5">Freitags</label>
+	<input type="checkbox" name="day" value="saturday" id="check6">
+	<label for="check6">Samstags</label>
+    <input type="checkbox" name="day" value="sunday" id="check7">
+	<label for="check7">Sonntags</label>
+</fieldset><br>
+    
+    
+    <h1>Pendlerstrecke 2</h1>
+    Durschnittliche Fahrtdauer: <input type="number" name="usetime2" min="0" value=0 required><br><br>
+    Fahrten pro Tag: <input type="number" name="usesday2" min="0" value=0 required><br><br>
+    <fieldset> 
+	<legend>Kreuzen Sie an, an welchen Tagen Sie diese Fahrten machen</legend> 
+	<input type="checkbox" name="day2" value="monday" id="check21" checked>
+	<label for="check21">Montags</label>
+	<input type="checkbox" name="day2" value="tuesday" id="check22">
+	<label for="check22">Dienstags</label>
+	<input type="checkbox" name="day2" value="wednesday" id="check23">
+	<label for="check23">Mittwochs</label>
+	<input type="checkbox" name="day2" value="thursday" id="check24">
+	<label for="check24">Donnerstags</label>
+	<input type="checkbox" name="day2" value="friday" id="check25">
+	<label for="check25">Freitags</label>
+	<input type="checkbox" name="day2" value="saturday" id="check26">
+	<label for="check26">Samstags</label>
+    <input type="checkbox" name="day2" value="sunday" id="check27">
+	<label for="check27">Sonntags</label>
+</fieldset><br>
 
     <input type="submit">
-</form>
+</form><br><br>
 
 {% autoescape off %}
+<h1>Übersicht Tarife und Kosten</h1>
 <table>{{metable}}</table>
 {% endautoescape %}
 

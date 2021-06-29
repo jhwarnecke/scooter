@@ -5,10 +5,11 @@
 <h2> We recommand you choose either {{name}} or {{name2}}, </h2>
 <h2> the cost for both is {{costs}}€! </h2>
 <br>
-<h1> Full Table</h1>
+<h1>Vollständige Kostentabelle</h1>
 {% autoescape off %}
 <table>{{mytable}}</table>
 {% endautoescape %}
+<br>Bemerkung: Bei Tarifen mit Kontingent werden die Kosten für nicht genutzte Minuten vom monatlichen Preis abgezogen unter der Annahme, dass diese im nächsten Monat verbraucht werden. Die realen Kosten würden also monatlich schwanken (und sich im Durchschnitt ausgleichen zu den berechneten Kosten)
 
 
 {% endblock %}
