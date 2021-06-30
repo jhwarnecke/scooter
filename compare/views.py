@@ -145,11 +145,11 @@ def calculation(request):
     # Falls 2 Tarife mit gleichen Kosten beide Ausgeben
     if mydf.at[0,'Kosten'] == mydf.at[1,'Kosten']:
         anbieter2 = mydf.at[1,'Name']
-        return render(request, "result2.html", { "costs": minval, "name": anbieter,
+        return render(request, "result.html", { "costs": minval, "name": anbieter,
                             "name2": anbieter2, "mytable": myhtmldf})
 
     return render(request, "result.html", { "costs": minval, "name": anbieter,
-                            "mytable": myhtmldf})
+                            "mytable": myhtmldf, "name2": None})
 
 # definition of the cost function
 # missing variables for (Beschränkung Zeit, Preis nach 45)
@@ -167,7 +167,6 @@ def normal(j, days, uses, total_time):
     return costs
 
 # def für normal von kontingent
-# Der Montag wird als Buchungszeitpunkt für den Konti-Tarif angesehen (sollte aber keinen großen Einfluss haben)
 def kontingent(j, total_time):
     if df[7][j] != 0:
         konti =  0

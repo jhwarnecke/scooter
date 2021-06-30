@@ -2,14 +2,26 @@
 
 {% block content %}
 <h1> Ergebnis </h1>
-<h2> Wir empfehlen folgendes Modell: {{name}}</h2>
-<h2> Die (durchschnittlichen) monatlichen Kosten belaufen sich auf {{costs}} €! </h2>
-<br>
+
+{% if name2|length == 0 %}<h2> Wir empfehlen folgendes Modell: {{name}}</h2>
+<h2> Die (durchschnittlichen) monatlichen Kosten belaufen sich auf {{costs}} €! </h2>{% endif %}
+
+{% if name2|length != 0  %}<h2> Wir empfehlen folgende Modelle {{name}} oder {{name2}}, die Kosten sind gleich.</h2>
+<h2> Die (durchschnittlichen) monatlichen Kosten belaufen sich auf {{costs}}€! </h2>{% endif %}
+
+
+{% if name == "Lime Flatrate" or name == "Lime Pass Tag" or name2 == "Lime Flatrate" or name2 == "Lime Pass Tag" or name == "Tier Tagespass" or name2 == "Tier Tagespass"%}Nach 45 Minuten Fahrt muss der E-Scooter kurz abgestellt werden. Sonst 
+fallen Mehrkosten i.H.v. 23 Cent pro Minute (Lime) bzw. 19 Cent pro Minute (Tier) an!{% endif %}
+
+
+<br><br>
 <h1>Vollständige Kostentabelle</h1>
 {% autoescape off %}
 <table>{{mytable}}</table>
 {% endautoescape %}
-<br>Bemerkung: Bei Tarifen mit Kontingent werden die Kosten für nicht genutzte Minuten vom monatlichen Preis abgezogen unter der Annahme, dass diese im nächsten Monat verbraucht werden (und dementsprechend nicht verfallen). Die realen Kosten würden also monatlich schwanken (und sich im Durchschnitt ausgleichen zu den berechneten Kosten)
+<br>Bemerkung: Bei Tarifen mit Kontingent werden die Kosten für nicht genutzte Minuten vom monatlichen Preis abgezogen unter der Annahme, 
+dass diese im nächsten Monat verbraucht werden (und dementsprechend nicht verfallen). 
+Die realen Kosten würden also monatlich schwanken (und sich im Durchschnitt ausgleichen zu den berechneten Kosten)
     
 
 {% endblock %}
