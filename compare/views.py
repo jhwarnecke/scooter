@@ -139,7 +139,7 @@ def calculation(request):
     minval = mydf.at[0,'Kosten']
     anbieter = mydf.at[0,'Name']
 
-    # convert df to html table
+    # convert mydf to html table
     myhtmldf = mydf.to_html(index = False)
     
     # Falls 2 Tarife mit gleichen Kosten beide Ausgeben
