@@ -159,11 +159,12 @@ def normal(j, days, uses, total_time):
     preisppak = df[4][j+1]
     preispmon = df[5][j+1]
     preisptag = df[6][j+1] * days
+    # beschraenkung = time_ones(j+1, time_per_use, time_per_use2)
     mylist = kontingent(j+1, total_time)
     konti = mylist[0]
     anteil_rest_konsten_konti = mylist[1]
     konti_plus = konti - anteil_rest_konsten_konti
-    costs = grund + preispmin + preisptag + preisppak + preispmon + konti_plus
+    costs = grund + preispmin + preisptag + preisppak + preispmon + konti_plus + beschraenkung
     return costs
 
 # def für normal von kontingent
@@ -191,3 +192,16 @@ def kontingent(j, total_time):
         mylist = [konti, anteil_rest_kosten]
 
     return mylist
+
+#calculating extra costs, when time is higher then the daily time variable
+# def time_ones (j, time_per_use, time_per_use2):
+#         extra = 0
+#         # checks for input in field "Beschränkung"
+#         if df[9][j] != 0:
+#             if df[9][j] < time_per_use:
+#                 extra = (time_per_use - df[9][j]) * df[10][j]
+#                 print(extra)
+#             if df[9][j] < time_per_use2:
+#                 extra = extra + (time_per_use2 - df[9][j]) * df[10][j]
+#                 print(extra)
+#         return extra
