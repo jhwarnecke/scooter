@@ -90,7 +90,7 @@ def calculation(request):
             if day2[z] == "sunday":
                 sunday2 = True
 
-    
+
     numdays = len(day)
     numdays2 = len(day2)
 
@@ -98,7 +98,7 @@ def calculation(request):
     time_per_use = int(request.POST['usetime'])
     uses_per_day = int(request.POST['usesday'])
 
-    
+
     uses = numdays * uses_per_day * 4
     total_time = time_per_use * uses
 
@@ -118,15 +118,15 @@ def calculation(request):
     days_sum = (numdays + numdays2 - samedays) * 4
     uses_sum = uses + uses2
     total_time_sum = total_time + total_time2
-    
- 
+
+
 
     # new df to save costs and name in
     mydf = pd.DataFrame()
 
     # iterations for all the models, save costs and name in df
     for i in range(0, x[1]):
-        total_costs = round(normal(i, days_sum, uses_sum, total_time_sum), 2)
+        total_costs = round(normal(i, days_sum, uses_sum, total_time_sum, time_per_use, time_per_use2), 2)
         mytempname = ((df[0][i + 1])+" "+(df[1][i + 1]))
         mytempdf = pd.DataFrame({'Name': [mytempname], 'Kosten': [total_costs]})
         mydf = mydf.append(mytempdf, ignore_index=True)
@@ -134,14 +134,14 @@ def calculation(request):
     # SORTIEREN DER Tabelle NACH KOSTEN
     mydf = mydf.sort_values(by=['Kosten'])
     mydf = mydf.reset_index(drop=True)
-   
+
     # Kosten und Name des günstigsten Modells in Variablen speichern
     minval = mydf.at[0,'Kosten']
     anbieter = mydf.at[0,'Name']
 
     # convert mydf to html table
     myhtmldf = mydf.to_html(index = False)
-    
+
     # Falls 2 Tarife mit gleichen Kosten beide Ausgeben
     if mydf.at[0,'Kosten'] == mydf.at[1,'Kosten']:
         anbieter2 = mydf.at[1,'Name']
@@ -153,55 +153,70 @@ def calculation(request):
 
 # definition of the cost function
 # missing variables for (Beschränkung Zeit, Preis nach 45)
-def normal(j, days, uses, total_time):
+def normal(j, days, uses, total_time, time_per_use, time_per_use2):
     grund = df[2][j+1] * uses
     preispmin = df[3][j+1] * total_time
     preisppak = df[4][j+1]
     preispmon = df[5][j+1]
     preisptag = df[6][j+1] * days
-    # beschraenkung = time_ones(j+1, time_per_use, time_per_use2)
-    mylist = kontingent(j+1, total_time)
-    konti = mylist[0]
-    anteil_rest_konsten_konti = mylist[1]
-    konti_plus = konti - anteil_rest_konsten_konti
-    costs = grund + preispmin + preisptag + preisppak + preispmon + konti_plus + beschraenkung
+    beschraenkung = time_ones(j+1, time_per_use, time_per_use2)
+    konti = kontingent(j + 1, total_time, uses)
+    #mylist = kontingent_loop(j+1, total_time)
+    #konti_loop = mylist[0]
+    #anteil_rest_konsten_konti_loop = mylist[1]
+    konti_plus = 0 # Zeile löschen, wenn die anderen Zeilen wieder reingenommen werden
+    #konti_plus = konti_loop - anteil_rest_konsten_konti_loop
+    costs = grund + preispmin + preisptag + preisppak + preispmon + konti_plus + beschraenkung + konti
     return costs
 
-# def für normal von kontingent
-def kontingent(j, total_time):
-    if df[7][j] != 0:
-        konti =  0
-        loop = 1
-        new_total_time = total_time
-        while loop == 1:
-            new_total_time = new_total_time - df[7][j]
-            if 0 < new_total_time:
-                loop = 1
-                konti = konti + df[4][j]
-
-            else:
-                loop = 0
-                rest = - new_total_time
-                anteil_rest = rest / df[7][j]
-                anteil_rest_kosten = anteil_rest * df[4][j]
-                mylist = [konti, anteil_rest_kosten]
-
+# def für normal von kontingent, keine Freischaltkosten nach Kontingent, Abo ist monatlich
+def kontingent(j, total_time, uses):
+    if df[7][j] != 0 and df[7][j] < total_time:
+        konti = (total_time - df[7][j]) * df[8][j]
+        # vom konti preis den vorher berechneten Preis für die
+        # Freischaltungen und den Minutenpreis abziehen, damit die Addition in def normal noch stimmt
+        konti = konti - df[2][j+1] * uses - df[3][j+1] * total_time
     else:
         konti = 0
-        anteil_rest_kosten = 0
-        mylist = [konti, anteil_rest_kosten]
+    return konti
 
-    return mylist
+#calculating extra costs, when time is higher then the per use time variable
+def time_ones (j, time_per_use, time_per_use2):
+        extra = 0
+        # checks for input in field "Beschränkung"
+        if df[9][j] != 0:
+            if df[9][j] < time_per_use:
+                extra = (time_per_use - df[9][j]) * df[10][j]
+            if df[9][j] < time_per_use2:
+                extra = extra + (time_per_use2 - df[9][j]) * df[10][j]
+        return extra
 
-#calculating extra costs, when time is higher then the daily time variable
-# def time_ones (j, time_per_use, time_per_use2):
-#         extra = 0
-#         # checks for input in field "Beschränkung"
-#         if df[9][j] != 0:
-#             if df[9][j] < time_per_use:
-#                 extra = (time_per_use - df[9][j]) * df[10][j]
-#                 print(extra)
-#             if df[9][j] < time_per_use2:
-#                 extra = extra + (time_per_use2 - df[9][j]) * df[10][j]
-#                 print(extra)
-#         return extra
+# Die Funktion berechnet den Preis für einen Tarif mit Kontingent, welches (automatisch)
+# erneuerbar ist und dessen Minuten nicht verfallen!
+####### ACHTUNG ###### GGF. MUSS NOCH DER MINUTENPREIS UND DER FREISCHALTPREIS, DER IN DEF NORMAL BERECHNET
+###################### WIRD NOCH ABGEZOGEN WERDEN, WEIL DER JA BEIM KONTINGENT-PAKET NICHT ANFÄLLT
+###################### SIEHE BERECHNUNG OHNE LOOP
+# def kontingent_loop(j, total_time):
+#     if df[7][j] != 0:
+#         konti =  0
+#         loop = 1
+#         new_total_time = total_time
+#         while loop == 1:
+#             new_total_time = new_total_time - df[7][j]
+#             if 0 < new_total_time:
+#                 loop = 1
+#                 konti = konti + df[4][j]
+
+#             else:
+#                 loop = 0
+#                 rest = - new_total_time
+#                 anteil_rest = rest / df[7][j]
+#                 anteil_rest_kosten = anteil_rest * df[4][j]
+#                 mylist = [konti, anteil_rest_kosten]
+
+#     else:
+#             konti = 0
+#             anteil_rest_kosten = 0
+#             mylist = [konti, anteil_rest_kosten]
+
+#     return mylist
