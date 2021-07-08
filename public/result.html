@@ -10,8 +10,8 @@
 <h2> Die (durchschnittlichen) monatlichen Kosten belaufen sich auf {{costs}}€! </h2>{% endif %}
 
 
-{% if name == "Lime Flatrate" or name == "Lime Pass Tag" or name2 == "Lime Flatrate" or name2 == "Lime Pass Tag" or name == "Tier Tagespass" or name2 == "Tier Tagespass"%}Nach 45 Minuten Fahrt muss der E-Scooter kurz abgestellt werden. Sonst 
-fallen Mehrkosten i.H.v. 23 Cent pro Minute (Lime) bzw. 19 Cent pro Minute (Tier) an!{% endif %}
+{% if name == "Lime Flatrate" or name == "Lime Pass Tag" or name2 == "Lime Flatrate" or name2 == "Lime Pass Tag" or name == "Tier Tagespass" or name2 == "Tier Tagespass"%}Der E-Scooter muss nach der Zeitbeschränkung pro Fahrt des Tarifs kurz abgestellt werden. Sonst 
+fallen Mehrkosten an, welche im im Tarif mit dem Zusatz "ohne Abstellen" angegeben sind!{% endif %}
 
 
 <br><br>
@@ -19,10 +19,12 @@ fallen Mehrkosten i.H.v. 23 Cent pro Minute (Lime) bzw. 19 Cent pro Minute (Tier
 {% autoescape off %}
 <table>{{mytable}}</table>
 {% endautoescape %}
-<br>Bemerkung: Bei Tarifen mit Kontingent werden die Kosten für nicht genutzte Minuten vom monatlichen Preis abgezogen unter der Annahme, 
+{% comment %} <br>Bemerkung: Bei Tarifen mit Kontingent werden die Kosten für nicht genutzte Minuten vom monatlichen Preis abgezogen unter der Annahme, 
 dass diese im nächsten Monat verbraucht werden (und dementsprechend nicht verfallen). 
-Die realen Kosten würden also monatlich schwanken (und sich im Durchschnitt ausgleichen zu den berechneten Kosten)
-    
+Die realen Kosten würden also monatlich schwanken (und sich im Durchschnitt ausgleichen zu den berechneten Kosten) {% endcomment %}
+{% if anzeige == True and name != "Lime Flatrate" or name != "Lime Pass Tag" or name2 != "Lime Flatrate" or name2 != "Lime Pass Tag" or name != "Tier Tagespass" or name2 != "Tier Tagespass"%}<br>Bei Flatrate Tarifen muss der Zeitbeschränkung pro Fahrt 
+der E-Scooter kurz abgestellt werden. Sonst fallen Mehrkosten an, welche im im Tarif mit dem Zusatz "ohne Abstellen" 
+angegeben sind!{% endif %}
 
 {% endblock %}
 

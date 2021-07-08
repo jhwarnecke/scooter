@@ -126,10 +126,17 @@ def calculation(request):
 
     # iterations for all the models, save costs and name in df
     for i in range(0, x[1]):
-        total_costs = round(normal(i, days_sum, uses_sum, total_time_sum, time_per_use, time_per_use2), 2)
+        total_costs = round(normal(i, days_sum, uses_sum, total_time_sum, time_per_use, time_per_use2, 0), 2)
         mytempname = ((df[0][i + 1])+" "+(df[1][i + 1]))
         mytempdf = pd.DataFrame({'Name': [mytempname], 'Kosten': [total_costs]})
         mydf = mydf.append(mytempdf, ignore_index=True)
+        if df[9][i+1] != 0: # wenn es eine Zeitbeschränkung gibt und diese überschritten wird, wird ein zusätzlicher Tarif erstellt,
+#                             "ohne Abstellen", der anzeigt wie hoch die Kosten sind, wenn man den Roller nicht zw.durch abstellt
+            if df[9][i+1] < time_per_use or df[9][i+1] < time_per_use2:
+                total_costs = round(normal(i, days_sum, uses_sum, total_time_sum, time_per_use, time_per_use2, 1), 2)
+                mytempname = ((df[0][i + 1])+" "+(df[1][i + 1])+" ohne Abstellen")
+                mytempdf = pd.DataFrame({'Name': [mytempname], 'Kosten': [total_costs]})
+                mydf = mydf.append(mytempdf, ignore_index=True)
 
     # SORTIEREN DER Tabelle NACH KOSTEN
     mydf = mydf.sort_values(by=['Kosten'])
@@ -142,24 +149,31 @@ def calculation(request):
     # convert mydf to html table
     myhtmldf = mydf.to_html(index = False)
 
+    # variable anzeige erstellen, bei True wird ein Zusatz in result.html ausgegeben
+    if df[9][i+1] < time_per_use or df[9][i+1] < time_per_use2:
+        anzeige = True
+    else: anzeige = False
+
     # Falls 2 Tarife mit gleichen Kosten beide Ausgeben
     if mydf.at[0,'Kosten'] == mydf.at[1,'Kosten']:
         anbieter2 = mydf.at[1,'Name']
         return render(request, "result.html", { "costs": minval, "name": anbieter,
-                            "name2": anbieter2, "mytable": myhtmldf})
+                            "name2": anbieter2, "mytable": myhtmldf, "anzeige": anzeige})
 
     return render(request, "result.html", { "costs": minval, "name": anbieter,
-                            "mytable": myhtmldf, "name2": None})
+                            "mytable": myhtmldf, "name2": None, "anzeige": anzeige})
 
 # definition of the cost function
 # missing variables for (Beschränkung Zeit, Preis nach 45)
-def normal(j, days, uses, total_time, time_per_use, time_per_use2):
+def normal(j, days, uses, total_time, time_per_use, time_per_use2, extra_loop):
     grund = df[2][j+1] * uses
     preispmin = df[3][j+1] * total_time
     preisppak = df[4][j+1]
     preispmon = df[5][j+1]
     preisptag = df[6][j+1] * days
-    beschraenkung = time_ones(j+1, time_per_use, time_per_use2)
+    beschraenkung = 0
+    if extra_loop == 1:
+        beschraenkung = time_ones(j+1, time_per_use, time_per_use2)
     konti = kontingent(j + 1, total_time, uses)
     #mylist = kontingent_loop(j+1, total_time)
     #konti_loop = mylist[0]
@@ -173,9 +187,6 @@ def normal(j, days, uses, total_time, time_per_use, time_per_use2):
 def kontingent(j, total_time, uses):
     if df[7][j] != 0 and df[7][j] < total_time:
         konti = (total_time - df[7][j]) * df[8][j]
-        # vom konti preis den vorher berechneten Preis für die
-        # Freischaltungen und den Minutenpreis abziehen, damit die Addition in def normal noch stimmt
-        konti = konti - df[2][j+1] * uses - df[3][j+1] * total_time
     else:
         konti = 0
     return konti
@@ -193,9 +204,6 @@ def time_ones (j, time_per_use, time_per_use2):
 
 # Die Funktion berechnet den Preis für einen Tarif mit Kontingent, welches (automatisch)
 # erneuerbar ist und dessen Minuten nicht verfallen!
-####### ACHTUNG ###### GGF. MUSS NOCH DER MINUTENPREIS UND DER FREISCHALTPREIS, DER IN DEF NORMAL BERECHNET
-###################### WIRD NOCH ABGEZOGEN WERDEN, WEIL DER JA BEIM KONTINGENT-PAKET NICHT ANFÄLLT
-###################### SIEHE BERECHNUNG OHNE LOOP
 # def kontingent_loop(j, total_time):
 #     if df[7][j] != 0:
 #         konti =  0
