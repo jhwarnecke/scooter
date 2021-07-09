@@ -197,9 +197,9 @@ def time_ones (j, time_per_use, time_per_use2):
         # checks for input in field "Beschränkung"
         if df[9][j] != 0:
             if df[9][j] < time_per_use:
-                extra = (time_per_use - df[9][j]) * df[10][j]
+                extra = (time_per_use - df[9][j]) * df[10][j] * 4
             if df[9][j] < time_per_use2:
-                extra = extra + (time_per_use2 - df[9][j]) * df[10][j]
+                extra = extra + (time_per_use2 - df[9][j]) * df[10][j] * 4
         return extra
 
 # Die Funktion berechnet den Preis für einen Tarif mit Kontingent, welches (automatisch)
