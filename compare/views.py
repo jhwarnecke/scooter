@@ -22,6 +22,7 @@ def index(request):
 
 
 def calculation(request):
+
     global monday
     monday = False
     global tuesday
@@ -114,12 +115,9 @@ def calculation(request):
                 samedays += 1
 
 
-
     days_sum = (numdays + numdays2 - samedays) * 4
     uses_sum = uses + uses2
     total_time_sum = total_time + total_time2
-
-
 
     # new df to save costs and name in
     mydf = pd.DataFrame()
@@ -201,6 +199,9 @@ def time_ones (j, time_per_use, time_per_use2):
             if df[9][j] < time_per_use2:
                 extra = extra + (time_per_use2 - df[9][j]) * df[10][j] * 4
         return extra
+
+
+
 
 # Die Funktion berechnet den Preis für einen Tarif mit Kontingent, welches (automatisch)
 # erneuerbar ist und dessen Minuten nicht verfallen!
