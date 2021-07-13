@@ -151,7 +151,27 @@ def calculation(request):
     if df[9][i+1] < time_per_use or df[9][i+1] < time_per_use2:
         anzeige = True
     else: anzeige = False
+    
+    ### Logging the input and output data
+    # length_ex = log_out.shape
+    #
+    # print(length_ex[1])
 
+    # log_out[length_ex[1]+1][0] = datetime.now()
+    # log_out[length_ex[1]+1][1] = time_per_use
+    # log_out[length_ex[1]+1][2] = uses_per_day
+    # log_out[length_ex[1]+1][3] = numdays
+    # log_out[length_ex[1]+1][4] = minval
+    # log_out[length_ex[1]+1][5] = anbieter
+
+    # log_out.to_excel("output.xlsx")
+
+    #log_out = pd.read_excel(r'output.xlsx', index_col=None, header=None)
+    #log_out1 = pd.DataFrame({'0':[datetime.now()], '1': [time_per_use], '2': [uses_per_day], '3':[numdays], '4':[minval], '5':[anbieter]})
+    # log_out.to_excel(log_out1, startrow = log_out.sheets['output.xlsx'].max_row, index = False, Header = False)
+    #log_out = log_out.append(log_out, ignore_index=True)
+    #append_df_to_excel(r'output.xlsx', log_out1)
+    
     # Falls 2 Tarife mit gleichen Kosten beide Ausgeben
     if mydf.at[0,'Kosten'] == mydf.at[1,'Kosten']:
         anbieter2 = mydf.at[1,'Name']
