@@ -6,6 +6,8 @@ import pandas as pd
 from pandas.io.formats import style
 from openpyxl import load_workbook
 from datetime import datetime
+from matplotlib import pylab
+from io import BytesIO
 
 
 
