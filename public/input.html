@@ -9,6 +9,18 @@ Gerechnet wird mit 4 Wochen pro Monat.
 <form action="calculation" method="POST">
     {% csrf_token %}
     <h1>Pendlerstrecke 1</h1>
+
+	<label for="reason">Grund der Fahrt</label>
+  	<select name="reason" id="reason">
+    <option value="work">Arbeit</option>
+    <option value="sports">Sport</option>
+    <option value="friends">Freunde</option>
+    <option value="shopping">Einkaufen</option>
+	<option value="other">Sonstiges</option>
+	</select>
+	<br><br>
+
+
     Durschnittliche Fahrtdauer: <input type="number" name="usetime" min="1" value=1 required><br><br>
     Fahrten pro Tag: <input type="number" name="usesday" min="1" value=1 required><br><br>
     <fieldset> 
@@ -27,20 +39,23 @@ Gerechnet wird mit 4 Wochen pro Monat.
 	<label for="check6">Samstags</label>
     <input type="checkbox" name="day" value="sunday" id="check7">
 	<label for="check7">Sonntags</label>
-	<br>
-
-	<label for="cars">Grund der Fahrt</label>
-  	<select name="reason" id="reason">
-    <option value="work">Arbeit</option>
-    <option value="sports">Sport</option>
-    <option value="friends">Freunde</option>
-    <option value="shopping">Einkaufen</option>
-  </select>
 
 </fieldset><br>
-    
-    
+
+
     <h1>Pendlerstrecke 2</h1>
+
+	<label for="reason2">Grund der Fahrt</label>
+  	<select name="reason2" id="reason2">
+	<option value="sports2">Sport</option>
+    <option value="work2">Arbeit</option>
+    <option value="friends2">Freunde</option>
+    <option value="shopping2">Einkaufen</option>
+	<option value="other2">Sonstiges</option>
+
+	</select>
+  <br><br>
+
     Durschnittliche Fahrtdauer: <input type="number" name="usetime2" min="0" value=0 required><br><br>
     Fahrten pro Tag: <input type="number" name="usesday2" min="0" value=0 required><br><br>
     <fieldset> 
@@ -61,6 +76,8 @@ Gerechnet wird mit 4 Wochen pro Monat.
 	<label for="check27">Sonntags</label>
 </fieldset><br>
 
+	
+<br><br>
     <input type="submit">
 </form><br><br>
 

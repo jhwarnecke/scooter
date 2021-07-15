@@ -52,6 +52,13 @@ def calculation(request):
     global sunday2
     sunday2 = False
 
+    reason = request.POST["reason"]
+    reason2 = request.POST["reason2"]
+
+    print(reason)
+    print(reason2)
+
+
     day = request.POST.getlist("day")
     day2 = request.POST.getlist("day2")
 
