@@ -160,7 +160,7 @@ def calculation(request):
     anbieter = mydf.at[0,'Name']
 
     # convert mydf to html table
-    myhtmldf = mydf.to_html(index = False)
+    myhtmldf = mydf.to_html(index = True)
     
     # Histogram
     height = mydf['Kosten']
