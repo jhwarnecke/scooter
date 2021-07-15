@@ -4,6 +4,8 @@ from django.shortcuts import render
 import numpy as np
 import pandas as pd
 from pandas.io.formats import style
+from openpyxl import load_workbook
+from datetime import datetime
 
 
 
@@ -159,26 +161,20 @@ def calculation(request):
         anzeige = True
     else: anzeige = False
     
-    ### Logging the input and output data
-    # length_ex = log_out.shape
-    #
-    # print(length_ex[1])
 
-    # log_out[length_ex[1]+1][0] = datetime.now()
-    # log_out[length_ex[1]+1][1] = time_per_use
-    # log_out[length_ex[1]+1][2] = uses_per_day
-    # log_out[length_ex[1]+1][3] = numdays
-    # log_out[length_ex[1]+1][4] = minval
-    # log_out[length_ex[1]+1][5] = anbieter
+    workbook_name = 'log_out.xlsx'
+    wb = load_workbook(workbook_name)
+    page = wb.active
 
-    # log_out.to_excel("output.xlsx")
-
-    #log_out = pd.read_excel(r'output.xlsx', index_col=None, header=None)
-    #log_out1 = pd.DataFrame({'0':[datetime.now()], '1': [time_per_use], '2': [uses_per_day], '3':[numdays], '4':[minval], '5':[anbieter]})
-    # log_out.to_excel(log_out1, startrow = log_out.sheets['output.xlsx'].max_row, index = False, Header = False)
-    #log_out = log_out.append(log_out, ignore_index=True)
-    #append_df_to_excel(r'output.xlsx', log_out1)
+    # New data to write:
+    new_companies = [datetime.now(), reason, time_per_use, uses_per_day,
+                    numdays, reason2, time_per_use2, uses_per_day2, numdays2, minval, anbieter]
     
+    page.append(new_companies)
+    wb.save(filename=workbook_name)
+
+
+
     # Falls 2 Tarife mit gleichen Kosten beide Ausgeben
     if mydf.at[0,'Kosten'] == mydf.at[1,'Kosten']:
         anbieter2 = mydf.at[1,'Name']
