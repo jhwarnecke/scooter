@@ -155,7 +155,13 @@ def calculation(request):
 
     # convert mydf to html table
     myhtmldf = mydf.to_html(index = False)
+    
+    # Histogram
+    height = mydf['Kosten']
+    bar_names = mydf.index
 
+    chart = get_plot(height, bar_names)
+    
     # variable anzeige erstellen, bei True wird ein Zusatz in result.html ausgegeben
     if df[9][i+1] < time_per_use or df[9][i+1] < time_per_use2:
         anzeige = True
@@ -223,7 +229,24 @@ def time_ones (j, time_per_use, time_per_use2):
                 extra = extra + (time_per_use2 - df[9][j]) * df[10][j] * 4
         return extra
 
+def get_graph():
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    graph = base64.b64encode(image_png)
+    graph = graph.decode('utf-8')
+    buffer.close()
+    plt.clf()
+    return graph
 
+
+def get_plot(height, bar_names):
+    y_pos = np.arange(len(bar_names))
+    plt.bar(y_pos, height)
+    plt.xticks(y_pos, bar_names)
+    graph = get_graph()
+    return graph
 
 
 # Die Funktion berechnet den Preis für einen Tarif mit Kontingent, welches (automatisch)
