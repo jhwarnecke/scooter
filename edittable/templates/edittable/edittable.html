@@ -4,6 +4,7 @@
 <h1> Hier kann man die Eingaben in der Tabelle ändern! </h1>
 
 <form action="editfunc" method="POST">
+    {% csrf_token %}
     <label for="modelname">Welches Modell soll geändert werden?</label>
         <select name="modelname" id="modelname">
         {% for a in mylist%}
