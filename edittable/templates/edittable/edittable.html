@@ -1,9 +1,30 @@
 {% extends 'basic.html' %}
 
 {% block content %}
-<h1> Test erfolgreich! </h1>
+<h1> Hier kann man die Eingaben in der Tabelle ändern! </h1>
 
+<form action="editfunc" method="POST">
+    <label for="modelname">Welches Modell soll geändert werden?</label>
+        <select name="modelname" id="modelname">
+        {% for a in mylist%}
+            <option value={{forloop.counter0}}>{{a}}</option>
+        {% endfor %}
+        </select>
+    <br><br>
+        <select name="column" id="column">
+        {% for a in myseclist%}
+            <option value={{forloop.counter0}}>{{a}}</option>
+        {% endfor %}
+        </select>
+    <br><br>
+    <input type="submit">
+</form>
 
-    
+<br><br><br>
+{% autoescape off %}
+<h1>Übersicht Tarife und Kosten</h1>
+<table>{{metable}}</table>
+{% endautoescape %}
 
 {% endblock %}
+
