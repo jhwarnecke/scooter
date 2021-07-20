@@ -12,13 +12,18 @@
         {% endfor %}
         </select>
     <br><br>
+    <label for="modelname">Welche Angabe soll geändert werden?</label>
         <select name="column" id="column">
         {% for a in myseclist%}
             <option value={{forloop.counter0}}>{{a}}</option>
         {% endfor %}
         </select>
     <br><br>
+    Neuer Wert: <input type="number" name="newvalue", min=0, value=1 step=0.01 required><br><br>
+
     <input type="submit">
+
+
 </form>
 
 <br><br><br>

@@ -1,0 +1,12 @@
+{% extends 'basic.html' %}
+
+{% block content %}
+<h1> Änderung des Wertes war erfolgreich!</h1>
+
+
+{% autoescape off %}
+<h2>NEUE Übersicht Tarife und Kosten</h2>
+<table>{{metable}}</table>
+{% endautoescape %}
+
+{% endblock %}

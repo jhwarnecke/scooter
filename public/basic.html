@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comparison</title>
 </head>
-<body bgcolor="lightgreen">
+<body bgcolor="lightblue">
 {% block nav %}
         <ul id="nav">
             <li>{% block nav-index %}<a href="{% url 'index' %}">Startseite</a>{% endblock %}</li>
+            <li>{% block nav-link %}<a href="{% url 'editindex' %}">Editor</a>{% endblock %}</li>
+
         </ul>
   {% endblock %}
     {% block content %}
