@@ -19,6 +19,9 @@ fallen Mehrkosten an, welche im im Tarif mit dem Zusatz "ohne Abstellen" angegeb
 {% autoescape off %}
 <table>{{mytable}}</table>
 {% endautoescape %}
+<br><br>
+<img src="data:image/png;base64, {{chart|safe}}">
+<br>
 {% comment %} <br>Bemerkung: Bei Tarifen mit Kontingent werden die Kosten für nicht genutzte Minuten vom monatlichen Preis abgezogen unter der Annahme, 
 dass diese im nächsten Monat verbraucht werden (und dementsprechend nicht verfallen). 
 Die realen Kosten würden also monatlich schwanken (und sich im Durchschnitt ausgleichen zu den berechneten Kosten) {% endcomment %}
