@@ -26,7 +26,7 @@ x = df.shape
 
 def index(request):
     dx = df.to_html(header=False, index=False)
-    return render(request, "input.html", {"metable":dx})
+    return render(request, "compare/input.html", {"metable":dx})
 
 
 def calculation(request):
@@ -144,7 +144,7 @@ def calculation(request):
         mytempdf = pd.DataFrame({'Name': [mytempname], 'Kosten': [total_costs]})
         mydf = mydf.append(mytempdf, ignore_index=True)
         if df[9][i+1] != 0: # wenn es eine Zeitbeschränkung gibt und diese überschritten wird, wird ein zusätzlicher Tarif erstellt,
-#                             "ohne Abstellen", der anzeigt wie hoch die Kosten sind, wenn man den Roller nicht zw.durch abstellt
+                            # "ohne Abstellen", der anzeigt wie hoch die Kosten sind, wenn man den Roller nicht zw.durch abstellt
             if df[9][i+1] < time_per_use or df[9][i+1] < time_per_use2:
                 total_costs = round(normal(i, days_sum, uses_sum, total_time_sum, time_per_use, time_per_use2, 1), 2)
                 mytempname = ((df[0][i + 1])+" "+(df[1][i + 1])+" ohne Abstellen")
@@ -190,10 +190,10 @@ def calculation(request):
     # Falls 2 Tarife mit gleichen Kosten beide Ausgeben
     if mydf.at[0,'Kosten'] == mydf.at[1,'Kosten']:
         anbieter2 = mydf.at[1,'Name']
-        return render(request, "result.html", { "costs": minval, "name": anbieter,
+        return render(request, "compare/result.html", { "costs": minval, "name": anbieter,
                             "name2": anbieter2, "mytable": myhtmldf, "anzeige": anzeige, "chart": chart})
 
-    return render(request, "result.html", { "costs": minval, "name": anbieter,
+    return render(request, "compare/result.html", { "costs": minval, "name": anbieter,
                             "mytable": myhtmldf, "name2": None, "anzeige": anzeige, "chart": chart})
 
 # definition of the cost function

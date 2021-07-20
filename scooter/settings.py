@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'edittable',
+    'compare'
 ]
 
 MIDDLEWARE = [
@@ -56,7 +58,7 @@ import os
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'public')],
+        'DIRS': [os.path.join(BASE_DIR, 'public'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
