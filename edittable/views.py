@@ -2,6 +2,7 @@ from django.shortcuts import render
 import numpy as np
 import pandas as pd
 from openpyxl import load_workbook
+from datetime import datetime
 
 
 # Create your views here.
@@ -49,5 +50,20 @@ def editfunc(request):
     df = pd.read_excel(r'scooter.xlsx', index_col=None, header=None)
 
     dx = df.to_html(header=False, index=False)
+    
+    
+    # Log Excel Sheet for input data
+    # gleicher Aufbau wie für unseren anderen Log
+    workbook_name2 = 'log_in.xlsx'
+    wb2 = load_workbook(workbook_name2)
+    page2 = wb2.active
+
+    # New data to write:
+    # hier nehmen wir wieder einmal die Zeit, dann den Anbieter mit angehengtem Modell (df[][],
+    # als drittes den Spalten Namen aus der tabelle) und dann der neue Wert, der eingesetzt wird
+    new_companies2 = [datetime.now(), (df[0][tarif + 1])+" "+(df[1][tarif + 1]), df[mycolumn][0], newvalue]
+
+    page2.append(new_companies2)
+    wb2.save(filename=workbook_name2)
 
     return render(request, "edittable/ergebnis.html", {"metable":dx})
