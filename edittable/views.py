@@ -20,9 +20,12 @@ def index(request):
     # get Names of Models and Names of Cost-Structure-Elements into two Lists
     mylist = []
     myseclist = []
+    
+    # Hier wird die Liste mit der Kombi aus Namen des Anbieters und dem Namen des Modells befüllt
     for a in range(0, x[0]-1):
         mylist.append((df[0][a + 1])+" "+(df[1][a + 1]))
-    
+    # an dieser Stelle wird ähnlich wie oben eine Liste befüllt, aber hier mit den Namen der verschiedenen Spalten
+    # gestartet wird hier erst bei "2", weil davor Anbieter und Modell liegen
     for b in range(2, x[1]):
         myseclist.append(df[b][0])
     print(myseclist)
