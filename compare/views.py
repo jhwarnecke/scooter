@@ -12,12 +12,7 @@ from openpyxl import load_workbook
 
 
 
-# # reading excel sheet, index_col = none so we can get indices instead of names as headers
-# # that's why we will always start with row '1' and not '0'
-# # for columns we will start with '2' because there the values (variables) start
-# df = pd.read_excel(r'scooter.xlsx', index_col=None, header=None)
-# # get shape of excel sheet (to know number of iterations)
-# x = df.shape
+
 
 
 
@@ -37,7 +32,8 @@ def index(request):
 
 
 def calculation(request):
-
+    
+    # Definitionen der Tage, für die spätere Abfrage nach Anzahl an Tagen
     global monday
     monday = False
     global tuesday
@@ -81,9 +77,12 @@ def calculation(request):
     day = request.POST.getlist("day")
     day2 = request.POST.getlist("day2")
 
+    # Die Anzahl an Tagen muss größer null sein, weil sonst keine Berechnungen möglich sind
+    # sollten keine Tage eingetragen sein, wird auf die Error Seite weitergeleitet
     if len(day) == 0:
         return(render(request, "error.html"))
 
+    
     for z in range(0, len(day)):
         if day[z] == "monday":
             monday = True
@@ -226,7 +225,7 @@ def calculation(request):
         anbieter2 = mydf.at[1,'Name']
         return render(request, "compare/result.html", { "costs": minval, "name": anbieter,
                             "name2": anbieter2, "mytable": myhtmldf, "anzeige": anzeige, "chart": chart})
-
+    # Standard Ausgabe, wenn es keine gleichen minimalen kosten gibt
     return render(request, "compare/result.html", { "costs": minval, "name": anbieter,
                             "mytable": myhtmldf, "name2": None, "anzeige": anzeige, "chart": chart})
 
@@ -276,12 +275,23 @@ def time_ones (j, time_per_use, time_per_use2):
         extra = 0
         # checks for input in field "Beschränkung"
         if df[9][j] != 0:
+            # hier wird jeweils gecheckt, ob die einzelnen Pendlerstrecken, bzw deren Zeit pro Fahrt
+            # größer sind als die unter Beschränkung eingetragenen Werte in der Tabelle (dem Excel Sheet)
+            # wenn ja, dann wird die übrige Zeit aus der Differenz zwischen angegebener Zeit und Zeit aus
+            # der Tabelle gegeben und mit dem jeweiligen Preis multipliziert, außerem *4 um es wieder auf 
+            # 4 Wochen zu beziehen
             if df[9][j] < time_per_use:
                 extra = (time_per_use - df[9][j]) * df[10][j] * 4
+            # same thing für Pendlerstrecke 2
             if df[9][j] < time_per_use2:
                 extra = extra + (time_per_use2 - df[9][j]) * df[10][j] * 4
         return extra
 
+                            
+# Definition für das Histogram:
+# zuerste wird das Format der Figure festgelegt und decoded
+# zuletzt muss das Bild wieder gelöscht werden (plt.clf()), damit 
+# diese sich nicht überlagern                            
 def get_graph():
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
@@ -293,7 +303,7 @@ def get_graph():
     plt.clf()
     return graph
 
-
+# Ausgabe für das eigentliche Histogram mit Werten für die Höhe der Kosten (height) und Namen bzw Indizes in diesem Fall
 def get_plot(height, bar_names):
     y_pos = np.arange(len(bar_names))
     plt.bar(y_pos, height)
