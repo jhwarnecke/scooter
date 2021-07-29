@@ -1,0 +1,33 @@
+{% extends 'basic.html' %}
+
+{% block content %}
+<h1> Tarif hinzufügen!</h1>
+
+<form action="addfunc" method="POST">
+    {% csrf_token %}
+
+	
+    Anbieter: <input type="text" name="company" required><br><br>
+    Modell: <input type="text" name="model" required><br><br>
+    Grundgebühr: <input type="number" name="fix" min="0" value=0 required><br><br>
+    Preis pro Minute: <input type="number" name="ppminute" min="0" value=0 required><br><br>
+    Preis pro Paket: <input type="number" name="ppp" min="0" value=0 required><br><br>
+    Preis pro Monat: <input type="number" name="ppmonth" min="0" value=0 required><br><br>
+    Preis pro Tag: <input type="number" name="ppday" min="0" value=0 required><br><br>
+    Preis Kontingent: <input type="number" name="pcontingent" min="0" value=0 required><br><br>
+    Preis nach Kontingent: <input type="number" name="paftercontingent" min="0" value=0 required><br><br>
+    Beschränkung Zeit (min): <input type="number" name="limit" min="0" value=0 required><br><br>
+    Preis nach 45 pro min: <input type="number" name="pafterlimit" min="0" value=0 required><br><br>
+
+	
+
+    <input type="submit">
+</form><br><br>
+
+
+{% autoescape off %}
+<h2> Übersicht Tarife und Kosten</h2>
+<table>{{metable}}</table>
+{% endautoescape %}
+
+{% endblock %}

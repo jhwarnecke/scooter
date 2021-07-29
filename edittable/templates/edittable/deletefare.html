@@ -1,0 +1,27 @@
+{% extends 'basic.html' %}
+
+{% block content %}
+<h1> Tarif hinzufügen!</h1>
+
+<form action="deletefunc" method="POST">
+    {% csrf_token %}
+
+	<label for="modelname">Welches Modell soll gelöscht werden?</label>
+        <select name="modelname" id="modelname">
+        {% for a in mylist%}
+            <option value={{forloop.counter0}}>{{a}}</option>
+        {% endfor %}
+        </select>
+    <br><br>
+
+    <input type="submit">
+</form><br><br>
+
+
+
+{% autoescape off %}
+<h2> Übersicht Tarife und Kosten</h2>
+<table>{{metable}}</table>
+{% endautoescape %}
+
+{% endblock %}

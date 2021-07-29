@@ -172,7 +172,7 @@ def calculation(request):
     
     # Heraus kommt eine Tabelle mit den Gesamtkosten und dem jeweiligen Modell
     # dann wird im folgenden dit Tabelle nach den Kosten sortiert und die Indizes resettet
-    mydf = mydf.sort_values(by=['Kosten']
+    mydf = mydf.sort_values(by=['Kosten'])
     mydf = mydf.reset_index(drop=True)
 
     # Kosten und Name des günstigsten Modells in Variablen speichern
