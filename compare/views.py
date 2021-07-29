@@ -34,7 +34,7 @@ def index(request):
 def calculation(request):
     df = pd.read_excel(r'scooter.xlsx', index_col=None, header=None)
     x = df.shape
-
+    print(x)
     # Definitionen der Tage, für die spätere Abfrage nach Anzahl an Tagen
     global monday
     monday = False
@@ -154,7 +154,7 @@ def calculation(request):
     mydf = pd.DataFrame()
 
     # iterations for all the models, save costs and name in df
-    for i in range(0, x[1]):
+    for i in range(0, x[0]-1):
         # normal wird unten definiert. Dazu sind zur Eingabe die Gesamten Tage, Benutzungen und Zeiten der beiden Nutzungen einzugeben
         # außerdem wird iteriert über i+1, weil die erste Zeile aus Überschriften besteht
         total_costs = round(normal(i, days_sum, uses_sum, total_time_sum, time_per_use, time_per_use2, 0), 2)
@@ -176,7 +176,6 @@ def calculation(request):
     # dann wird im folgenden dit Tabelle nach den Kosten sortiert und die Indizes resettet
     mydf = mydf.sort_values(by=['Kosten'])
     mydf = mydf.reset_index(drop=True)
-
     # Kosten und Name des günstigsten Modells in Variablen speichern
     minval = mydf.at[0,'Kosten']
     anbieter = mydf.at[0,'Name']

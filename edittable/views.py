@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 import numpy as np
 import pandas as pd
 from openpyxl import load_workbook
@@ -7,8 +7,17 @@ from datetime import datetime
 
 # Create your views here.
 
-
 def index(request):
+    return render(request, "edittable/password.html")
+    
+def password(request):
+    enter = request.POST["thepassword"]
+    if(enter == "enter"):
+        return redirect(index2)
+    else: return render(request, "error.html")
+
+
+def index2(request):
     # reading excel sheet, index_col = none so we can get indices instead of names as headers
     # that's why we will always start with row '1' and not '0'
     # for columns we will start with '2' because there the values (variables) start
