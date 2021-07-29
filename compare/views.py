@@ -32,7 +32,9 @@ def index(request):
 
 
 def calculation(request):
-    
+    df = pd.read_excel(r'scooter.xlsx', index_col=None, header=None)
+    x = df.shape
+
     # Definitionen der Tage, für die spätere Abfrage nach Anzahl an Tagen
     global monday
     monday = False
@@ -212,8 +214,9 @@ def calculation(request):
                     numdays, reason2, time_per_use2, uses_per_day2, numdays2, minval, anbieter]
     # hinzufügen zum excel sheet, als unterste Zeile
     page.append(new_companies)
-    # Speichern der Datei
     wb.save(filename=workbook_name)
+    # Falls zwei gleichgünstig sind, wird auch der zweite gespeichert, dies wird unten in Zeile 228ff gemacht
+    
 
 
     # Ausgabe auf der "Result" Seite
@@ -223,6 +226,14 @@ def calculation(request):
     # Werten und dem Bild des Histograms übergeben                            
     if mydf.at[0,'Kosten'] == mydf.at[1,'Kosten']:
         anbieter2 = mydf.at[1,'Name']
+        # loggen des zweiten Modells
+        workbook_name = 'log_out.xlsx'
+        wb = load_workbook(workbook_name)
+        page = wb.active
+        new_companies2 = [datetime.now(), reason, time_per_use, uses_per_day,
+                    numdays, reason2, time_per_use2, uses_per_day2, numdays2, minval, anbieter2]
+        page.append(new_companies2)
+        wb.save(filename=workbook_name)
         return render(request, "compare/result.html", { "costs": minval, "name": anbieter,
                             "name2": anbieter2, "mytable": myhtmldf, "anzeige": anzeige, "chart": chart})
     # Standard Ausgabe, wenn es keine gleichen minimalen kosten gibt
