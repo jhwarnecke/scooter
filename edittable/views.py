@@ -172,4 +172,3 @@ def deletefunc(request):
     return render(request, "edittable/ergebnis.html", {"metable":dx})
 
 
-# test
