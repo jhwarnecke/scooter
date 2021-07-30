@@ -155,9 +155,9 @@ def calculation(request):
 
     # iterations for all the models, save costs and name in df
     for i in range(0, x[0]-1):
-        # normal wird unten definiert. Dazu sind zur Eingabe die Gesamten Tage, Benutzungen und Zeiten der beiden Nutzungen einzugeben
+        # costs_calc wird unten definiert. Dazu sind zur Eingabe die Gesamten Tage, Benutzungen und Zeiten der beiden Nutzungen einzugeben
         # außerdem wird iteriert über i+1, weil die erste Zeile aus Überschriften besteht
-        total_costs = round(normal(i, days_sum, uses_sum, total_time_sum, time_per_use, time_per_use2, 0), 2)
+        total_costs = round(costs_calc(i, days_sum, uses_sum, total_time_sum, time_per_use, time_per_use2, 0), 2)
         # Hier wird der Name des Modells zwischengespeichert
         mytempname = ((df[0][i + 1])+" "+(df[1][i + 1]))
         # Und hier der errechnete Wert zusammen mit dem Namen des Modells gespeichert
@@ -167,7 +167,7 @@ def calculation(request):
         if df[9][i+1] != 0: # wenn es eine Zeitbeschränkung gibt und diese überschritten wird, wird ein zusätzlicher Tarif erstellt,
                             # "ohne Abstellen", der anzeigt wie hoch die Kosten sind, wenn man den Roller nicht zw.durch abstellt
             if df[9][i+1] < time_per_use or df[9][i+1] < time_per_use2:
-                total_costs = round(normal(i, days_sum, uses_sum, total_time_sum, time_per_use, time_per_use2, 1), 2)
+                total_costs = round(costs_calc(i, days_sum, uses_sum, total_time_sum, time_per_use, time_per_use2, 1), 2)
                 mytempname = ((df[0][i + 1])+" "+(df[1][i + 1])+" ohne Abstellen")
                 mytempdf = pd.DataFrame({'Name': [mytempname], 'Kosten': [total_costs]})
                 mydf = mydf.append(mytempdf, ignore_index=True)
@@ -241,9 +241,9 @@ def calculation(request):
 
                             
 # definition of the cost function
-# Die zuvor beschriebene "normal" Funktion bekommt die beschriebenen Werte + einen Wert
+# Die zuvor beschriebene "costs_calc" Funktion bekommt die beschriebenen Werte + einen Wert
 # für "extra_loop", wenn es Zeitbeschränkungen gibt und diese überschritten werden                            
-def normal(j, days, uses, total_time, time_per_use, time_per_use2, extra_loop):
+def costs_calc(j, days, uses, total_time, time_per_use, time_per_use2, extra_loop):
     # Grundpreis also die Grundgebühr pro Freischaltung * der Anzahl an Benutzungen                           
     grund = df[2][j+1] * uses
     # Preis pro Minute * der gesamten Nutzungszeit                            
@@ -270,7 +270,7 @@ def normal(j, days, uses, total_time, time_per_use, time_per_use2, extra_loop):
     costs = grund + preispmin + preisptag + preisppak + preispmon + konti_plus + beschraenkung + konti
     return costs
 
-# def für normal von kontingent, keine Freischaltkosten nach Kontingent, Abo ist monatlich
+# def für costs_calc von kontingent, keine Freischaltkosten nach Kontingent, Abo ist monatlich
 def kontingent(j, total_time, uses):
     # if statement überprüft, ob es ein Kontingent ist, nur dann hat die Zeile einen Wert
     # größer 0 und gleichzeitig muss die total time überschritten sein                            
