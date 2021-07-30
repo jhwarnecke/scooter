@@ -258,13 +258,11 @@ def costs_calc(j, days, uses, total_time, time_per_use, time_per_use2, extra_loo
     if extra_loop == 1:
         beschraenkung = time_ones(j+1, time_per_use, time_per_use2)
     # Berechnung der Kontingent Preise in weiterer Funktion (übernimmt die Gesamtzeit der Nutzung und die Anzahl)                            
-    konti = kontingent(j + 1, total_time, uses)
-                                        #####ToDo: raus?                            
-                                        #mylist = kontingent_loop(j+1, total_time)
-                                        #konti_loop = mylist[0]
-                                        #anteil_rest_konsten_konti_loop = mylist[1]
-
-                                        #konti_plus = konti_loop - anteil_rest_konsten_konti_loop
+    konti = kontingent(j + 1, total_time, uses)                          
+    #mylist = kontingent_loop(j+1, total_time)
+    #konti_loop = mylist[0]
+    #anteil_rest_konsten_konti_loop = mylist[1]
+    #konti_plus = konti_loop - anteil_rest_konsten_konti_loop
     konti_plus = 0 # Zeile löschen, wenn die anderen Zeilen wieder reingenommen werden                       
     # Berechnung der anfallenden Kosten, die dann zurückgegeben werden                            
     costs = grund + preispmin + preisptag + preisppak + preispmon + konti_plus + beschraenkung + konti
