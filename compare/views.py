@@ -25,7 +25,7 @@ def index(request):
     # get shape of excel sheet (to know number of iterations)
     global x
     x = df.shape
-    
+
     # Transformieren unserer Tabelle in html, um sie auf der Startseite zu zeigen
     dx = df.to_html(header=False, index=False)
     return render(request, "compare/input.html", {"metable":dx})
@@ -64,13 +64,13 @@ def calculation(request):
     saturday2 = False
     global sunday2
     sunday2 = False
-    
+
     # reasons sind unsere Picklists aus denen der User auswählen kann,
     # wofür die jeweilige Strecke genutzt wird (technisch sonst kein Nutzen außer für log Datei)
     reason = request.POST["reason"]
     reason2 = request.POST["reason2"]
-    
-    
+
+
     ######## ToDo: Auskommentieren bzw löschen
     print(reason)
     print(reason2)
@@ -84,7 +84,7 @@ def calculation(request):
     if len(day) == 0:
         return(render(request, "error.html"))
 
-    
+
     for z in range(0, len(day)):
         if day[z] == "monday":
             monday = True
@@ -131,14 +131,14 @@ def calculation(request):
     uses = numdays * uses_per_day * 4
     # GEsamte Nutzungsdauer kalkuliert aus der Länge einer Benutzung * der Benutzungen
     total_time = time_per_use * uses
-    
+
     # Das gleiche wie oben, aber mit der zweiten Pendlerstrecke
     time_per_use2 = int(request.POST['usetime2'])
     uses_per_day2 = int(request.POST['usesday2'])
     uses2 = numdays2 * uses_per_day2 * 4
     total_time2 = time_per_use2 * uses2
-    
-    # Wenn an gleichen Tagen gefahren wird, werden dises von den Tagen pro use abgezogen 
+
+    # Wenn an gleichen Tagen gefahren wird, werden dises von den Tagen pro use abgezogen
     samedays = 0
     for z in range(0, len(day)):
         for y in range(0, len(day2)):
@@ -171,7 +171,7 @@ def calculation(request):
                 mytempname = ((df[0][i + 1])+" "+(df[1][i + 1])+" ohne Abstellen")
                 mytempdf = pd.DataFrame({'Name': [mytempname], 'Kosten': [total_costs]})
                 mydf = mydf.append(mytempdf, ignore_index=True)
-    
+
     # Heraus kommt eine Tabelle mit den Gesamtkosten und dem jeweiligen Modell
     # dann wird im folgenden dit Tabelle nach den Kosten sortiert und die Indizes resettet
     mydf = mydf.sort_values(by=['Kosten'])
@@ -182,22 +182,22 @@ def calculation(request):
 
     # der Table mit den Ergebnissen wird zu einem html table umgeformt und die Indizes hinzugefügt
     myhtmldf = mydf.to_html(index = True)
-    
+
     # Histogram Werte für die Ergebnis Seite
     # "height" ist dabei die Höhe der kosten und "bar_names" die Indizes, damit es einfacher zu lesen
     # ist und mit der Tabelle verglichen werden kann
     height = mydf['Kosten']
     bar_names = mydf.index
-    
+
     # Definition folgt weiter unten, die Funktion nimmt die Kosten und den Index und baut daraus einen plot,
     # bzw macht aus dem plot ein .png, was dann auf der "Result page" angezeigt werden kann
     chart = get_plot(height, bar_names)
-    
+
     # variable anzeige erstellen, bei True wird ein Zusatz in result.html ausgegeben
     if df[9][i+1] < time_per_use or df[9][i+1] < time_per_use2:
         anzeige = True
     else: anzeige = False
-    
+
     # Loggen der Eingabe und Ausgabe Parameter in einer externen Excel Tabelle
     # Name der Datei wird eingelesen
     workbook_name = 'log_out.xlsx'
@@ -215,14 +215,14 @@ def calculation(request):
     page.append(new_companies)
     wb.save(filename=workbook_name)
     # Falls zwei gleichgünstig sind, wird auch der zweite gespeichert, dies wird unten in Zeile 228ff gemacht
-    
+
 
 
     # Ausgabe auf der "Result" Seite
     # Falls 2 Tarife mit gleichen Kosten beide Ausgeben
     # Es werden die Werte für die minimalen Kosten (minval), den jeweiligen Namen des Anbieters,
     # wahlweise die Namen für ein Modell mit gleichen Kosten, dann der Table mit den sortierten
-    # Werten und dem Bild des Histograms übergeben                            
+    # Werten und dem Bild des Histograms übergeben
     if mydf.at[0,'Kosten'] == mydf.at[1,'Kosten']:
         anbieter2 = mydf.at[1,'Name']
         # loggen des zweiten Modells
@@ -239,39 +239,39 @@ def calculation(request):
     return render(request, "compare/result.html", { "costs": minval, "name": anbieter,
                             "mytable": myhtmldf, "name2": None, "anzeige": anzeige, "chart": chart})
 
-                            
+
 # definition of the cost function
 # Die zuvor beschriebene "costs_calc" Funktion bekommt die beschriebenen Werte + einen Wert
-# für "extra_loop", wenn es Zeitbeschränkungen gibt und diese überschritten werden                            
+# für "extra_loop", wenn es Zeitbeschränkungen gibt und diese überschritten werden
 def costs_calc(j, days, uses, total_time, time_per_use, time_per_use2, extra_loop):
-    # Grundpreis also die Grundgebühr pro Freischaltung * der Anzahl an Benutzungen                           
+    # Grundpreis also die Grundgebühr pro Freischaltung * der Anzahl an Benutzungen
     grund = df[2][j+1] * uses
-    # Preis pro Minute * der gesamten Nutzungszeit                            
+    # Preis pro Minute * der gesamten Nutzungszeit
     preispmin = df[3][j+1] * total_time
-    # Preis für das Paket (wenn es eins ist)                            
+    # Preis für das Paket (wenn es eins ist)
     preisppak = df[4][j+1]
-    # Monatlicher Preis                            
+    # Monatlicher Preis
     preispmon = df[5][j+1]
-    # Tageskarte bzw Preis dafür * Anzahl der Tage, an denen es genutzt werden würde                            
-    preisptag = df[6][j+1] * days                            
+    # Tageskarte bzw Preis dafür * Anzahl der Tage, an denen es genutzt werden würde
+    preisptag = df[6][j+1] * days
     beschraenkung = 0
     if extra_loop == 1:
         beschraenkung = time_ones(j+1, time_per_use, time_per_use2)
-    # Berechnung der Kontingent Preise in weiterer Funktion (übernimmt die Gesamtzeit der Nutzung und die Anzahl)                            
-    konti = kontingent(j + 1, total_time, uses)                          
+    # Berechnung der Kontingent Preise in weiterer Funktion (übernimmt die Gesamtzeit der Nutzung und die Anzahl)
+    konti = kontingent(j + 1, total_time, uses)
     #mylist = kontingent_loop(j+1, total_time)
     #konti_loop = mylist[0]
     #anteil_rest_konsten_konti_loop = mylist[1]
     #konti_plus = konti_loop - anteil_rest_konsten_konti_loop
-    konti_plus = 0 # Zeile löschen, wenn die anderen Zeilen wieder reingenommen werden                       
-    # Berechnung der anfallenden Kosten, die dann zurückgegeben werden                            
+    konti_plus = 0 # Zeile löschen, wenn die anderen Zeilen wieder reingenommen werden
+    # Berechnung der anfallenden Kosten, die dann zurückgegeben werden
     costs = grund + preispmin + preisptag + preisppak + preispmon + konti_plus + beschraenkung + konti
     return costs
 
 # def für costs_calc von kontingent, keine Freischaltkosten nach Kontingent, Abo ist monatlich
 def kontingent(j, total_time, uses):
     # if statement überprüft, ob es ein Kontingent ist, nur dann hat die Zeile einen Wert
-    # größer 0 und gleichzeitig muss die total time überschritten sein                            
+    # größer 0 und gleichzeitig muss die total time überschritten sein
     if df[7][j] != 0 and df[7][j] < total_time:
         konti = (total_time - df[7][j]) * df[8][j]
     else:
@@ -286,7 +286,7 @@ def time_ones (j, time_per_use, time_per_use2):
             # hier wird jeweils gecheckt, ob die einzelnen Pendlerstrecken, bzw deren Zeit pro Fahrt
             # größer sind als die unter Beschränkung eingetragenen Werte in der Tabelle (dem Excel Sheet)
             # wenn ja, dann wird die übrige Zeit aus der Differenz zwischen angegebener Zeit und Zeit aus
-            # der Tabelle gegeben und mit dem jeweiligen Preis multipliziert, außerem *4 um es wieder auf 
+            # der Tabelle gegeben und mit dem jeweiligen Preis multipliziert, außerem *4 um es wieder auf
             # 4 Wochen zu beziehen
             if df[9][j] < time_per_use:
                 extra = (time_per_use - df[9][j]) * df[10][j] * 4
@@ -295,11 +295,11 @@ def time_ones (j, time_per_use, time_per_use2):
                 extra = extra + (time_per_use2 - df[9][j]) * df[10][j] * 4
         return extra
 
-                            
+
 # Definition für das Histogram:
 # zuerste wird das Format der Figure festgelegt und decoded
-# zuletzt muss das Bild wieder gelöscht werden (plt.clf()), damit 
-# diese sich nicht überlagern                            
+# zuletzt muss das Bild wieder gelöscht werden (plt.clf()), damit
+# diese sich nicht überlagern
 def get_graph():
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
