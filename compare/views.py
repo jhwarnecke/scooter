@@ -157,7 +157,7 @@ def calculation(request):
     for i in range(0, x[0]-1):
         # costs_calc wird unten definiert. Dazu sind zur Eingabe die Gesamten Tage, Benutzungen und Zeiten der beiden Nutzungen einzugeben
         # außerdem wird iteriert über i+1, weil die erste Zeile aus Überschriften besteht
-        total_costs = round(costs_calc(i, days_sum, uses_sum, total_time_sum, time_per_use, time_per_use2, 0), 2)
+        total_costs = round(costs_calc(i, days_sum, uses_sum, total_time_sum, time_per_use, time_per_use2, uses, uses2, 0), 2)
         # Hier wird der Name des Modells zwischengespeichert
         mytempname = ((df[0][i + 1])+" "+(df[1][i + 1]))
         # Und hier der errechnete Wert zusammen mit dem Namen des Modells gespeichert
@@ -167,7 +167,7 @@ def calculation(request):
         if df[9][i+1] != 0: # wenn es eine Zeitbeschränkung gibt und diese überschritten wird, wird ein zusätzlicher Tarif erstellt,
                             # "ohne Abstellen", der anzeigt wie hoch die Kosten sind, wenn man den Roller nicht zw.durch abstellt
             if df[9][i+1] < time_per_use or df[9][i+1] < time_per_use2:
-                total_costs = round(costs_calc(i, days_sum, uses_sum, total_time_sum, time_per_use, time_per_use2, 1), 2)
+                total_costs = round(costs_calc(i, days_sum, uses_sum, total_time_sum, time_per_use, time_per_use2, uses, uses2, 1), 2)
                 mytempname = ((df[0][i + 1])+" "+(df[1][i + 1])+" ohne Abstellen")
                 mytempdf = pd.DataFrame({'Name': [mytempname], 'Kosten': [total_costs]})
                 mydf = mydf.append(mytempdf, ignore_index=True)
@@ -243,7 +243,7 @@ def calculation(request):
 # definition of the cost function
 # Die zuvor beschriebene "costs_calc" Funktion bekommt die beschriebenen Werte + einen Wert
 # für "extra_loop", wenn es Zeitbeschränkungen gibt und diese überschritten werden
-def costs_calc(j, days, uses, total_time, time_per_use, time_per_use2, extra_loop):
+def costs_calc(j, days, uses, total_time, time_per_use, time_per_use2, uses1, uses2, extra_loop):
     # Grundpreis also die Grundgebühr pro Freischaltung * der Anzahl an Benutzungen
     grund = df[2][j+1] * uses
     # Preis pro Minute * der gesamten Nutzungszeit
@@ -256,7 +256,7 @@ def costs_calc(j, days, uses, total_time, time_per_use, time_per_use2, extra_loo
     preisptag = df[6][j+1] * days
     beschraenkung = 0
     if extra_loop == 1:
-        beschraenkung = time_ones(j+1, time_per_use, time_per_use2)
+        beschraenkung = time_ones(j+1, time_per_use, time_per_use2, uses1, uses2)
     # Berechnung der Kontingent Preise in weiterer Funktion (übernimmt die Gesamtzeit der Nutzung und die Anzahl)
     konti = kontingent(j + 1, total_time, uses)
     #mylist = kontingent_loop(j+1, total_time)
@@ -279,7 +279,7 @@ def kontingent(j, total_time, uses):
     return konti
 
 #calculating extra costs, when time is higher then the per use time variable
-def time_ones (j, time_per_use, time_per_use2):
+def time_ones (j, time_per_use, time_per_use2, uses1, uses2):
         extra = 0
         # checks for input in field "Beschränkung"
         if df[9][j] != 0:
@@ -289,10 +289,10 @@ def time_ones (j, time_per_use, time_per_use2):
             # der Tabelle gegeben und mit dem jeweiligen Preis multipliziert, außerem *4 um es wieder auf
             # 4 Wochen zu beziehen
             if df[9][j] < time_per_use:
-                extra = (time_per_use - df[9][j]) * df[10][j] * 4
+                extra = (time_per_use - df[9][j]) * df[10][j] * 4 *uses1
             # same thing für Pendlerstrecke 2
             if df[9][j] < time_per_use2:
-                extra = extra + (time_per_use2 - df[9][j]) * df[10][j] * 4
+                extra = extra + (time_per_use2 - df[9][j]) * df[10][j] * 4 * uses2
         return extra
 
 
