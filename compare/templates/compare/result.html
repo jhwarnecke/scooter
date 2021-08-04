@@ -10,9 +10,8 @@
   <h2> Die (durchschnittlichen) monatlichen Kosten belaufen sich auf {{costs}}€! </h2>{% endif %}
 </div>
 
-{% if name == "Lime Flatrate" or name == "Lime Pass Tag" or name2 == "Lime Flatrate" or name2 == "Lime Pass Tag" or name == "Tier Tagespass" or name2 == "Tier Tagespass"%}<div>Der E-Scooter muss nach der Zeitbeschränkung pro Fahrt des Tarifs kurz
-  abgestellt werden. Sonst
-  fallen Mehrkosten an, welche im im Tarif mit dem Zusatz "ohne Abstellen" angegeben sind!</div>{% endif %}
+{% if anzeige == True and name == "Lime Flatrate" or name == "Lime Pass Tag" or name2 == "Lime Flatrate" or name2 == "Lime Pass Tag" or name == "Tier Tagespass" or name2 == "Tier Tagespass"%}<div>Der E-Scooter muss nach der Zeitbeschränkung pro Fahrt des Tarifs kurz
+  abgestellt werden. Sonst fallen Mehrkosten an, welche im im Tarif mit dem Zusatz "ohne Abstellen" angegeben sind!</div>{% endif %}
 
 
 <br><br>

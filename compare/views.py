@@ -153,6 +153,8 @@ def calculation(request):
     # Neuer Table um die Kosten und die dazugehörigen Namen der Modelle zu speichern
     mydf = pd.DataFrame()
 
+    anzeige = False
+
     # iterations for all the models, save costs and name in df
     for i in range(0, x[0]-1):
         # costs_calc wird unten definiert. Dazu sind zur Eingabe die Gesamten Tage, Benutzungen und Zeiten der beiden Nutzungen einzugeben
@@ -171,6 +173,7 @@ def calculation(request):
                 mytempname = ((df[0][i + 1])+" "+(df[1][i + 1])+" ohne Abstellen")
                 mytempdf = pd.DataFrame({'Name': [mytempname], 'Kosten': [total_costs]})
                 mydf = mydf.append(mytempdf, ignore_index=True)
+                anzeige = True
 
     # Heraus kommt eine Tabelle mit den Gesamtkosten und dem jeweiligen Modell
     # dann wird im folgenden dit Tabelle nach den Kosten sortiert und die Indizes resettet
@@ -192,11 +195,6 @@ def calculation(request):
     # Definition folgt weiter unten, die Funktion nimmt die Kosten und den Index und baut daraus einen plot,
     # bzw macht aus dem plot ein .png, was dann auf der "Result page" angezeigt werden kann
     chart = get_plot(height, bar_names)
-
-    # variable anzeige erstellen, bei True wird ein Zusatz in result.html ausgegeben
-    if df[9][i+1] < time_per_use or df[9][i+1] < time_per_use2:
-        anzeige = True
-    else: anzeige = False
 
     # Loggen der Eingabe und Ausgabe Parameter in einer externen Excel Tabelle
     # Name der Datei wird eingelesen
