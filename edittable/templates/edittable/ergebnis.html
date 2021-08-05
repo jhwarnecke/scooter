@@ -2,11 +2,13 @@
 
 {% block content %}
 <h1> Änderung war erfolgreich!</h1>
-
-
+<br>
 {% autoescape off %}
 <h2>NEUE Übersicht Tarife und Kosten</h2>
+<br>
+<div class = tableIn>
 <table>{{metable}}</table>
+</div>
 {% endautoescape %}
 
 {% endblock %}
