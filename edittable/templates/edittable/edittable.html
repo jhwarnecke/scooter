@@ -5,7 +5,7 @@
 <br>
 <form action="editfunc" method="POST">
   {% csrf_token %}
-  <div>
+  <div class = "editIn">
     <label for="modelname">Welches Modell soll geändert werden?</label>
     <select name="modelname" id="modelname">
       {% for a in mylist%}
@@ -14,7 +14,7 @@
     </select>
   </div>
   <br><br>
-  <div>
+  <div class = "editIn">
     <label for="modelname">Welche Angabe soll geändert werden?</label>
     <select name="column" id="column">
       {% for a in myseclist%}
@@ -23,7 +23,7 @@
     </select>
   </div>
   <br><br>
-  <div>
+  <div class = "editIn">
     Neuer Wert: <input type="number" name="newvalue" , min=0, value=1 step=0.01 required><br>
   </div>
   <br>
@@ -35,7 +35,7 @@
 
 </form>
 
-<br><br><br>
+<br><br>
 {% autoescape off %}
 <h1>Übersicht Tarife und Kosten</h1>
 <br>
