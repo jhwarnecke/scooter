@@ -71,9 +71,6 @@ def calculation(request):
     reason2 = request.POST["reason2"]
 
 
-    ######## ToDo: Auskommentieren bzw löschen
-    print(reason)
-    print(reason2)
 
     # Abfrage der eingegebenen Werte für die Checkboxes der Tage, an denen gefahren wird
     day = request.POST.getlist("day")
@@ -123,7 +120,6 @@ def calculation(request):
     numdays2 = len(day2)
 
     # Abfrage für die Zeit pro Nutzung und Abfrage für die Anzahl an Benutzungen pro Tag
-    # ToDO: weg -> time_of_use = sum(time_dict.values())
     time_per_use = int(request.POST['usetime'])
     uses_per_day = int(request.POST['usesday'])
 
