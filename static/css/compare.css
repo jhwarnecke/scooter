@@ -53,6 +53,7 @@ div {
   background: lightgray;
   font-size: 20px;
   padding: 10px;
+  display: inline-block;
 }
 
 .navigator {
@@ -68,6 +69,7 @@ div {
   border: 5px solid gray;
   margin: 50;
   background: lightgray;
+  display: inline-block;
 }
 
 .tableOut {
@@ -76,6 +78,7 @@ div {
   border: 5px solid gray;
   margin: 50;
   background: lightgray;
+  display: inline-block;
 }
 
 .flex-container {
@@ -91,16 +94,20 @@ div {
   text-align: center;
   line-height: 50px;
   font-size: 20px;
+  display: inline-block;
 }
 
 .editIn{
   width: 80%
+  display: inline-block;
 }
 
 .pw{
     width: 80%;
+    display: inline-block;
 }
 
 .tarifAdd {
-  width: 80%
+  width: 80%;
+  display: inline-block;
 }
