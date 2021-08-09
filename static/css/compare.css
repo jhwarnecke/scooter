@@ -47,7 +47,7 @@ body {
 }
 
 div {
-  width: 800px;
+  width: auto;
   border: 5px solid gray;
   margin: 50;
   background: lightgray;
@@ -56,14 +56,14 @@ div {
 }
 
 .navigator {
-  width: 150px; padding: 10px;
+  width: 80%; padding: 10px;
   border: 5px solid gray;
   margin: 50;
   background: lightgray;
 }
 
 .tableIn {
-  width: 1400px;
+  width: 100%;
   padding: 10px;
   border: 5px solid gray;
   margin: 50;
@@ -71,7 +71,7 @@ div {
 }
 
 .tableOut {
-  width: 300px;
+  width: 80%;
   padding: 10px;
   border: 5px solid gray;
   margin: 50;
@@ -79,7 +79,7 @@ div {
 }
 
 .flex-container {
-  width: 1400px;
+  width: 80%;
   display: flex;
   flex-wrap: nowrap;
 }
@@ -94,13 +94,13 @@ div {
 }
 
 .editIn{
-  width: 700px
+  width: 80%
 }
 
 .pw{
-    width: 300px;
+    width: 80%;
 }
 
 .tarifAdd {
-  width: 500px
+  width: 80%
 }
