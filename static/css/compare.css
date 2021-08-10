@@ -25,12 +25,12 @@ li a:hover {
 
 h1 {
   color: black;
-  font-size: 50px;
+  font-size: 25px;
 }
 
 h2 {
   color: black;
-  font-size: 25px;
+  font-size: 12.5px;
 }
 
 
@@ -51,8 +51,8 @@ div {
   border: 5px solid gray;
   margin: 50;
   background: lightgray;
-  font-size: 20px;
-  padding: 10px;
+  font-size: 12.5px;
+  padding: 5px;
   display: inline-block;
 }
 
@@ -64,16 +64,13 @@ div {
 }
 
 .tableIn {
-  width: 100%;
   padding: 10px;
   border: 5px solid gray;
-  margin: 50;
   background: lightgray;
   display: inline-block;
 }
 
 .tableOut {
-  width: 80%;
   padding: 10px;
   border: 5px solid gray;
   margin: 50;
@@ -82,32 +79,24 @@ div {
 }
 
 .flex-container {
-  width: 80%;
+  width: 90%;
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: nowrap; 
 }
 
 .flex-container .box {
   background-color: #f1f1f1;
-  width: 50%;
+  width: 60%;
   margin: 10px;
   text-align: center;
-  line-height: 50px;
-  font-size: 20px;
+  line-height: 25px;
+  font-size: 12.5px;
   display: inline-block;
 }
 
-.editIn {
-  width: 80%;
-  display: inline-block;
-}
 
-.pw{
-    width: 80%;
-    display: inline-block;
-}
-
-.tarifAdd {
-  width: 80%;
-  display: inline-block;
-}
+.form-submit-button {
+  height: 30px;
+  width: 100px;
+  font: bold 15px;
+} 
