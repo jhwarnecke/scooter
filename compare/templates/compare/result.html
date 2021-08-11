@@ -9,8 +9,8 @@
   {% if name2|length != 0  %}<h2> Wir empfehlen folgende Modelle {{name}} oder {{name2}}, die Kosten sind gleich.</h2>
   <h2> Die (durchschnittlichen) monatlichen Kosten belaufen sich auf {{costs}}€! </h2>{% endif %}
 </div>
-
-{% if anzeige == True and name == "Lime Flatrate" or name == "Lime Pass Tag" or name2 == "Lime Flatrate" or name2 == "Lime Pass Tag" or name == "Tier Tagespass" or name2 == "Tier Tagespass"%}<div>Der E-Scooter muss nach der Zeitbeschränkung pro Fahrt des Tarifs kurz
+<br><br>
+{% if anzeige == True %}<div>Der E-Scooter muss nach der Zeitbeschränkung pro Fahrt des Tarifs kurz
   abgestellt werden. Sonst fallen Mehrkosten an, welche im im Tarif mit dem Zusatz "ohne Abstellen" angegeben sind!</div>{% endif %}
 
 
@@ -31,13 +31,9 @@
 
 </div>
 <br>
-<div>
   {% comment %} Bemerkung: Bei Tarifen mit Kontingent werden die Kosten für nicht genutzte Minuten vom monatlichen Preis abgezogen unter der Annahme,
   dass diese im nächsten Monat verbraucht werden (und dementsprechend nicht verfallen).
   Die realen Kosten würden also monatlich schwanken (und sich im Durchschnitt ausgleichen zu den berechneten Kosten) {% endcomment %}
-  {% if anzeige == True and name != "Lime Flatrate" or name != "Lime Pass Tag" or name2 != "Lime Flatrate" or name2 != "Lime Pass Tag" or name != "Tier Tagespass" or name2 != "Tier Tagespass"%}Bei Flatrate Tarifen muss die Zeitbeschränkung pro
-  Fahrt
-  der E-Scooter kurz abgestellt werden. Sonst fallen Mehrkosten an, welche im im Tarif mit dem Zusatz "ohne Abstellen"
-  angegeben sind!{% endif %}
-</div>
+  {% if anzeige == False %}<div>Bei Flatrate Tarifen muss die Zeitbeschränkung pro Fahrt der E-Scooter kurz abgestellt werden. Sonst fallen Mehrkosten an, welche im im Tarif mit dem Zusatz "ohne Abstellen" angegeben sind!
+</div>{% endif %}
 {% endblock %}
